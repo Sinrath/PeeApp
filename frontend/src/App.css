@@ -7,12 +7,6 @@
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -28,11 +22,27 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.pee-button {
+  font-size: 24px;
+  padding: 10px 20px;
+  margin: 20px;
+  cursor: pointer;
+}
+
+.list-toggle {
+  font-size: 18px;
+  padding: 5px 10px;
+  margin: 20px;
+  cursor: pointer;
+}
+
+.pee-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 20px;
+  text-align: left;
+}
+
+.pee-list li {
+  margin: 5px 0;
 }

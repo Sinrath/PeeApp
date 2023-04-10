@@ -1,24 +1,48 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import PeeButton from './components/PeeButton';
+import PeeList from './components/PeeList';
 
 function App() {
+  const [peeData, setPeeData] = useState([]);
+  const [showList, setShowList] = useState(false);
+
+  const recordPee = async () => {
+    try {
+      const response = await fetch('http://localhost:3500/pee', { method: 'POST' });
+      if (response.ok) {
+        const pee = await response.json();
+        setPeeData([...peeData, pee]);
+      }
+    } catch (error) {
+      console.error('Error recording pee:', error);
+    }
+  };
+
+  const fetchPeetimes = async () => {
+    try {
+      const response = await fetch('http://localhost:3500/pee');
+      setPeeData(await response.json());
+    } catch (error) {
+      console.error('Error fetching peetimes:', error);
+    }
+  };
+
+  const toggleList = () => {
+    setShowList(!showList);
+    if (!showList) fetchPeetimes();
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div className="App">
+        <header className="App-header">
+          <PeeButton onClick={recordPee} />
+          <button className="list-toggle" onClick={toggleList}>
+            {showList ? 'Hide List' : 'Show List'}
+          </button>
+          {showList && <PeeList peeData={peeData} setPeeData={setPeeData} />}
+        </header>
+      </div>
   );
 }
 
