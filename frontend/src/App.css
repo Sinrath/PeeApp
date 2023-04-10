@@ -1,13 +1,5 @@
 .App {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-.App-header {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -18,31 +10,17 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-.pee-button {
+.pee-button,
+.list-toggle {
+  display: block;
   font-size: 24px;
   padding: 10px 20px;
-  margin: 20px;
+  margin: 20px auto;
   cursor: pointer;
 }
 
 .list-toggle {
   font-size: 18px;
   padding: 5px 10px;
-  margin: 20px;
-  cursor: pointer;
-}
-
-.pee-list {
-  list-style-type: none;
-  padding: 0;
-  margin: 20px;
-  text-align: left;
-}
-
-.pee-list li {
-  margin: 5px 0;
+  margin-top: 1rem;
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import PeeButton from './components/PeeButton';
-import PeeList from './components/PeeList';
+import PeeListModal from "./components/PeeListModal";
 
 function App() {
   const [peeData, setPeeData] = useState([]);
@@ -40,7 +40,9 @@ function App() {
           <button className="list-toggle" onClick={toggleList}>
             {showList ? 'Hide List' : 'Show List'}
           </button>
-          {showList && <PeeList peeData={peeData} setPeeData={setPeeData} />}
+          {showList && (
+              <PeeListModal peeData={peeData} setPeeData={setPeeData} onClose={toggleList} />
+          )}
         </header>
       </div>
   );
