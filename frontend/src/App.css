@@ -1,26 +1,58 @@
 .App {
-  text-align: center;
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+    text-align: center;
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
 }
 
-.pee-button,
-.list-toggle {
-  display: block;
-  font-size: 24px;
-  padding: 10px 20px;
-  margin: 20px auto;
-  cursor: pointer;
+.pee-button{
+    background-color: #f44336;
+    color: white;
+    font-size: 2.5rem;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
 }
 
 .list-toggle {
-  font-size: 18px;
-  padding: 5px 10px;
-  margin-top: 1rem;
+    background-color: #98e59b;
+    position: fixed;
+    bottom: 5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
 }
+
+.list-toggle {
+    font-size: 18px;
+    padding: 5px 10px;
+    margin-top: 1rem;
+}
+
+.success-popup {
+    font-size: 18px;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    max-width: 90%;
+    text-align: center;
+}
+
+

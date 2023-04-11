@@ -1,0 +1,52 @@
+.peeList {
+    list-style-type: none;
+    padding: 10px 0 0;
+}
+
+.pee-date-group {
+    margin-bottom: 1rem;
+}
+
+.date-header {
+    margin: 0 0 0.5rem;
+    font-weight: bold;
+    text-align: left;
+    text-decoration: underline;
+    color: #a1a1a1;
+}
+
+.pee-date-group ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.pee-date-group li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.peeList li {
+    font-size: 1.7rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.delete-button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    color: #f44336;
+    font-size: 1.2rem;
+    padding: 0.2rem 0.5rem;
+    margin-left: 0.5rem;
+    border-radius: 3px;
+    transition: background-color 0.2s;
+}
+
+.delete-button:hover {
+    background-color: rgba(244, 67, 54, 0.1);
+}
