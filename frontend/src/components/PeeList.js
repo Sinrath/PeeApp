@@ -1,6 +1,9 @@
 import React from 'react';
 import './PeeList.css';
 
+const isDevelopment = process.env.NODE_ENV === 'development';
+const API_URL = isDevelopment ? 'http://localhost:3500' : '';
+
 const formatDate = (dateString) => {
     const date = new Date(dateString);
     const options = {year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'};
@@ -27,7 +30,7 @@ const groupByDate = (peeData) => {
 function PeeList({peeData, setPeeData}) {
     const deletePee = async (id) => {
         try {
-            const response = await fetch(`http://localhost:3500/pee/${id}`, {method: 'DELETE'});
+            const response = await fetch(`${API_URL}/pee/${id}`, {method: 'DELETE'});
             if (response.ok) {
                 // Remove the deleted peetime from the frontend list
                 const updatedPeeData = peeData.filter((pee) => pee._id !== id);

@@ -8,9 +8,12 @@ function App() {
     const [showList, setShowList] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
 
+    const isDevelopment = process.env.NODE_ENV === 'development';
+    const API_URL = isDevelopment ? 'http://localhost:3500' : '';
+
     const recordPee = async () => {
         try {
-            const response = await fetch('http://localhost:3500/pee', {method: 'POST'});
+            const response = await fetch(`${API_URL}/pee`, {method: 'POST'});
             if (response.ok) {
                 const pee = await response.json();
                 setPeeData([...peeData, pee]);
@@ -23,7 +26,7 @@ function App() {
 
     const fetchPeetimes = async () => {
         try {
-            const response = await fetch('http://localhost:3500/pee');
+            const response = await fetch(`${API_URL}/pee`);
             setPeeData(await response.json());
         } catch (error) {
             console.error('Error fetching peetimes:', error);
