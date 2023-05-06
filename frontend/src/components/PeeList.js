@@ -43,11 +43,16 @@ function PeeList({peeData, setPeeData}) {
         }
     };
 
-    const peeDataGroupedByDate = groupByDate(peeData);
+    // Sort peeData by date in descending order
+    const sortedPeeData = [...peeData].sort((a, b) => new Date(b.time) - new Date(a.time));
+    const peeDataGroupedByDate = groupByDate(sortedPeeData);
+
+    // Get the date keys and sort them in descending order
+    const sortedDateKeys = Object.keys(peeDataGroupedByDate).sort((a, b) => new Date(b) - new Date(a));
 
     return (
         <div className="peeList">
-            {Object.keys(peeDataGroupedByDate).map((date) => (
+            {sortedDateKeys.map((date) => (
                 <div key={date} className="pee-date-group">
                     <h3 className="date-header">{date}</h3>
                     <ul>
