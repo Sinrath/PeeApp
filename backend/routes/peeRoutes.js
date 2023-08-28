@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 const router = express.Router();
 
 router.post('/', async (req, res) => {
-    console.log("Endpoint /pee POST accessed");
     const pee = new Pee({ time: new Date(), _id: new mongoose.Types.ObjectId() });
     try {
         await pee.save();

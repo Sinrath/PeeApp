@@ -20,9 +20,6 @@ function App() {
             const response = await fetch(`${API_URL}/pee`, {method: 'POST'});
             const data = await response.json();
 
-            console.log("Response Status:", response.status);  // Logging the status
-            console.log("Response Data:", data);
-
             if (response.ok && data.message === "Pee time saved") {
                 setPeeData([...peeData, data.pee]);
                 savedSuccessfully = true;
