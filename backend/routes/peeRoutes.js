@@ -5,10 +5,16 @@ const mongoose = require('mongoose');
 const router = express.Router();
 
 router.post('/', async (req, res) => {
+    console.log("Endpoint /pee POST accessed");
     const pee = new Pee({ time: new Date(), _id: new mongoose.Types.ObjectId() });
-    await pee.save();
-    res.json(pee); // Return the created Pee object as JSON
+    try {
+        await pee.save();
+        res.json({ message: "Pee time saved", pee: pee });
+    } catch (error) {
+        res.status(500).json({ message: 'Error saving pee time', error: error });
+    }
 });
+
 
 
 router.get('/', async (req, res) => {

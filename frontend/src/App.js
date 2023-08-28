@@ -7,22 +7,39 @@ function App() {
     const [peeData, setPeeData] = useState([]);
     const [showList, setShowList] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const isDevelopment = process.env.NODE_ENV === 'development';
     const API_URL = isDevelopment ? 'http://localhost:3500' : '';
 
     const recordPee = async () => {
+        setIsLoading(true);
+        let savedSuccessfully = false;
+
         try {
             const response = await fetch(`${API_URL}/pee`, {method: 'POST'});
-            if (response.ok) {
-                const pee = await response.json();
-                setPeeData([...peeData, pee]);
-                showSuccessPopup();
+            const data = await response.json();
+
+            console.log("Response Status:", response.status);  // Logging the status
+            console.log("Response Data:", data);
+
+            if (response.ok && data.message === "Pee time saved") {
+                setPeeData([...peeData, data.pee]);
+                savedSuccessfully = true;
+            } else {
+                console.error('Error recording pee:', data ? data.message : 'No response data received');
             }
         } catch (error) {
-            console.error('Error recording pee:', error);
+            console.error('Error recording pee:', error.message || error.toString());
         }
+
+        // Ensure the loading state shows for at least 2 seconds
+        setTimeout(() => {
+            setIsLoading(false);
+            if (savedSuccessfully) showSuccessPopup();
+        }, 2000);
     };
+
 
     const fetchPeetimes = async () => {
         try {
@@ -54,7 +71,12 @@ function App() {
     return (
         <div className="App">
             <header className="App-header">
-                <PeeButton onClick={recordPee}/>
+                <PeeButton onClick={recordPee} disabled={isLoading}/>
+                {isLoading && (
+                    <div className="loading-popup">
+                        Saving pee time...
+                    </div>
+                )}
                 {!showList && (
                     <button className="list-toggle" onClick={toggleList}>
                         {'Show List'}
@@ -69,6 +91,7 @@ function App() {
             </header>
         </div>
     );
+
 }
 
 export default App;

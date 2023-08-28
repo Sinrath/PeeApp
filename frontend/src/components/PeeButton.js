@@ -1,8 +1,12 @@
 import React from 'react';
 
-const PeeButton = ({ onClick }) => {
+const PeeButton = ({onClick, disabled}) => {
     return (
-        <button className="pee-button" onClick={onClick}>
+        <button
+            className={`pee-button ${disabled ? 'disabled' : ''}`}
+            onClick={onClick}
+            disabled={disabled}
+        >
             Record Pee
         </button>
     );
