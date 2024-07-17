@@ -56,3 +56,67 @@
     background-color: #3e8e41;
 }
 
+/* Confirm modal styles */
+
+/* Overlay for the confirm modal */
+.confirm-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1050; /* Higher z-index to ensure it overlays other content if needed */
+}
+
+/* Content for the confirm modal, mimicking the pee-list-modal style */
+.confirm-modal-content {
+    background-color: #282c34;
+    padding: 2rem;
+    border-radius: 5px;
+    position: relative;
+    min-width: 250px;
+    min-height: 200px;
+    max-width: 500px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    text-align: center;
+    color: white;
+    font-weight: bold;
+}
+
+/* Reuse close and copy button styles from pee-list-modal */
+.confirm-modal-content .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    background-color: #f44336;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.confirm-modal-content .close-button:hover {
+    background-color: #da190b;
+}
+
+.confirm-modal-content button {
+    padding: 10px 20px;
+    margin: 20px;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    background-color: #4caf50; /* Green from your copy button for the confirm */
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.confirm-modal-content button:hover {
+    background-color: #3e8e41;
+}

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './PeeList.css';
+import ConfirmModal from './ConfirmModal';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 const API_URL = isDevelopment ? 'http://localhost:3500' : '';
@@ -27,12 +28,19 @@ const groupByDate = (peeData) => {
     }, {});
 };
 
-function PeeList({peeData, setPeeData}) {
+function PeeList({ peeData, setPeeData }) {
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [selectedId, setSelectedId] = useState(null);
+
+    const handleDeleteClick = (id) => {
+        setSelectedId(id);
+        setModalIsOpen(true);
+    };
+
     const deletePee = async (id) => {
         try {
             const response = await fetch(`${API_URL}/pee/${id}`, {method: 'DELETE'});
             if (response.ok) {
-                // Remove the deleted peetime from the frontend list
                 const updatedPeeData = peeData.filter((pee) => pee._id !== id);
                 setPeeData(updatedPeeData);
             } else {
@@ -41,6 +49,7 @@ function PeeList({peeData, setPeeData}) {
         } catch (error) {
             console.error('Error deleting pee:', error);
         }
+        setModalIsOpen(false);
     };
 
     // Sort peeData by date in descending order
@@ -59,7 +68,8 @@ function PeeList({peeData, setPeeData}) {
                         {peeDataGroupedByDate[date].map((pee) => (
                             <li key={pee._id}>
                                 {formatDate(pee.time)}
-                                <button className="delete-button" onClick={() => deletePee(pee._id)}>
+                                <button className="delete-button"
+                                        onClick={() => handleDeleteClick(pee._id)}>
                                     <i className="fas fa-trash-alt"></i>
                                 </button>
                             </li>
@@ -67,8 +77,14 @@ function PeeList({peeData, setPeeData}) {
                     </ul>
                 </div>
             ))}
+            <ConfirmModal
+                isOpen={modalIsOpen}
+                onRequestClose={() => setModalIsOpen(false)}
+                onConfirm={() => deletePee(selectedId)}
+                message="Are you sure you want to delete this pee time?"
+            />
         </div>
     );
-}
+};
 
 export default PeeList;
