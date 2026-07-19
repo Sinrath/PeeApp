@@ -5,27 +5,31 @@ import ConfirmModal from './ConfirmModal';
 const isDevelopment = process.env.NODE_ENV === 'development';
 const API_URL = isDevelopment ? 'http://localhost:3500' : '';
 
-const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const options = {year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'};
-    return date.toLocaleDateString(undefined, options);
+const formatTime = (dateString) => {
+    return new Date(dateString).toLocaleTimeString(undefined, {hour: '2-digit', minute: '2-digit'});
 };
 
-const formatDateHeader = (dateString) => {
+const startOfDay = (date) => new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+const dayLabel = (dateString) => {
     const date = new Date(dateString);
-    const options = {year: 'numeric', month: 'long', day: 'numeric'};
-    return date.toLocaleDateString(undefined, options);
+    const diffDays = Math.round((startOfDay(new Date()) - startOfDay(date)) / 86400000);
+    if (diffDays === 0) return 'Today';
+    if (diffDays === 1) return 'Yesterday';
+    return date.toLocaleDateString(undefined, {year: 'numeric', month: 'long', day: 'numeric'});
 };
 
-const groupByDate = (peeData) => {
-    return peeData.reduce((grouped, pee) => {
-        const date = formatDateHeader(pee.time);
-        if (!grouped[date]) {
-            grouped[date] = [];
+const groupByDay = (peeData) => {
+    const groups = {};
+    for (const pee of peeData) {
+        const date = new Date(pee.time);
+        const key = startOfDay(date).getTime();
+        if (!groups[key]) {
+            groups[key] = {key, label: dayLabel(pee.time), entries: []};
         }
-        grouped[date].push(pee);
-        return grouped;
-    }, {});
+        groups[key].entries.push(pee);
+    }
+    return Object.values(groups).sort((a, b) => b.key - a.key);
 };
 
 function PeeList({ peeData, setPeeData }) {
@@ -41,8 +45,7 @@ function PeeList({ peeData, setPeeData }) {
         try {
             const response = await fetch(`${API_URL}/pee/${id}`, {method: 'DELETE'});
             if (response.ok) {
-                const updatedPeeData = peeData.filter((pee) => pee._id !== id);
-                setPeeData(updatedPeeData);
+                setPeeData((prev) => prev.filter((pee) => pee._id !== id));
             } else {
                 console.error('Error deleting pee:', response.statusText);
             }
@@ -52,25 +55,32 @@ function PeeList({ peeData, setPeeData }) {
         setModalIsOpen(false);
     };
 
-    // Sort peeData by date in descending order
     const sortedPeeData = [...peeData].sort((a, b) => new Date(b.time) - new Date(a.time));
-    const peeDataGroupedByDate = groupByDate(sortedPeeData);
-
-    // Get the date keys and sort them in descending order
-    const sortedDateKeys = Object.keys(peeDataGroupedByDate).sort((a, b) => new Date(b) - new Date(a));
+    const dayGroups = groupByDay(sortedPeeData);
 
     return (
         <div className="peeList">
-            {sortedDateKeys.map((date) => (
-                <div key={date} className="pee-date-group">
-                    <h3 className="date-header">{date}</h3>
+            {dayGroups.map((group) => (
+                <div key={group.key} className="pee-date-group">
+                    <h3 className="date-header">
+                        {group.label}
+                        <span className="date-count">{group.entries.length}×</span>
+                    </h3>
                     <ul>
-                        {peeDataGroupedByDate[date].map((pee) => (
+                        {group.entries.map((pee) => (
                             <li key={pee._id}>
-                                {formatDate(pee.time)}
-                                <button className="delete-button"
-                                        onClick={() => handleDeleteClick(pee._id)}>
-                                    <i className="fas fa-trash-alt"></i>
+                                <span className="pee-time">{formatTime(pee.time)}</span>
+                                <button
+                                    className="delete-button"
+                                    aria-label="Delete entry"
+                                    onClick={() => handleDeleteClick(pee._id)}
+                                >
+                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                        <path
+                                            d="M9 3h6l1 2h4v2H4V5h4l1-2zm-3 6h12l-.9 11.1a2 2 0 0 1-2 1.9H8.9a2 2 0 0 1-2-1.9L6 9zm4 2v8h1.5v-8H10zm3 0v8h1.5v-8H13z"
+                                            fill="currentColor"
+                                        />
+                                    </svg>
                                 </button>
                             </li>
                         ))}
@@ -81,10 +91,10 @@ function PeeList({ peeData, setPeeData }) {
                 isOpen={modalIsOpen}
                 onRequestClose={() => setModalIsOpen(false)}
                 onConfirm={() => deletePee(selectedId)}
-                message="Are you sure you want to delete this pee time?"
+                message="Delete this pee time?"
             />
         </div>
     );
-};
+}
 
 export default PeeList;

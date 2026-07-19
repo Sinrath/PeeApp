@@ -1,7 +1,9 @@
 import React from 'react';
 import Modal from 'react-modal';
 
-Modal.setAppElement('#root');
+if (document.getElementById('root')) {
+    Modal.setAppElement('#root');
+}
 
 const ConfirmModal = ({ isOpen, onRequestClose, onConfirm, message }) => {
     return (
@@ -12,10 +14,11 @@ const ConfirmModal = ({ isOpen, onRequestClose, onConfirm, message }) => {
             overlayClassName="confirm-modal-overlay"
             className="confirm-modal-content"
         >
-            <h2>Confirm Action</h2>
-            <p>{message}</p>
-            <button onClick={onConfirm}>Yes, Delete</button>
-            <button className="close-button" onClick={onRequestClose}>X</button>
+            <p className="confirm-message">{message}</p>
+            <div className="confirm-actions">
+                <button className="confirm-cancel" onClick={onRequestClose}>Cancel</button>
+                <button className="confirm-delete" onClick={onConfirm}>Delete</button>
+            </div>
         </Modal>
     );
 };

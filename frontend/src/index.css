@@ -1,13 +1,73 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@font-face {
+    font-family: 'Fredoka';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('./fonts/fredoka-latin-400-normal.woff2') format('woff2');
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@font-face {
+    font-family: 'Fredoka';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('./fonts/fredoka-latin-500-normal.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Fredoka';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('./fonts/fredoka-latin-600-normal.woff2') format('woff2');
+}
+
+:root {
+    --bg: #16121f;
+    --surface: #221c31;
+    --surface-raised: #2a2340;
+    --line: rgba(255, 200, 110, 0.1);
+    --text: #f6f1e7;
+    --text-dim: #9d94ad;
+    --honey: #ffb52e;
+    --honey-deep: #ff9210;
+    --success: #7ddb8a;
+    --danger: #ff5347;
+    --sheet-radius: 24px;
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+    margin: 0;
+    background-color: var(--bg);
+}
+
+body {
+    font-family: 'Fredoka', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior-y: none;
+}
+
+button {
+    font-family: inherit;
+    touch-action: manipulation;
+}
+
+button:focus-visible {
+    outline: 2px solid var(--honey);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }

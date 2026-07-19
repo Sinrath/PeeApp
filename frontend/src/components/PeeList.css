@@ -1,53 +1,82 @@
 .peeList {
-    list-style-type: none;
-    padding: 10px 0 0;
-    margin-top: 1rem;
+    padding: 0.25rem 0 0;
 }
 
 .pee-date-group {
-    margin-bottom: 1rem;
+    margin-bottom: 1.4rem;
 }
 
 .date-header {
-    margin: 0 0 0.5rem;
-    font-weight: bold;
-    text-align: left;
-    text-decoration: underline;
-    color: #a1a1a1;
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0.5rem 0;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    background: var(--surface);
+    z-index: 1;
+}
+
+.date-count {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--honey);
+    background: rgba(255, 181, 46, 0.12);
+    padding: 0.15rem 0.6rem;
+    border-radius: 999px;
 }
 
 .pee-date-group ul {
-    list-style-type: none;
+    list-style: none;
     padding: 0;
+    margin: 0;
 }
 
 .pee-date-group li {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.5rem;
+    padding: 0.35rem 0;
+    border-bottom: 1px solid var(--line);
 }
 
-.peeList li {
-    font-size: 1.7rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
+.pee-date-group li:last-child {
+    border-bottom: none;
+}
+
+.pee-time {
+    font-size: 1.35rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
 }
 
 .delete-button {
     border: none;
-    background-color: transparent;
+    background: transparent;
+    color: var(--text-dim);
     cursor: pointer;
-    color: #f44336;
-    font-size: 1.2rem;
-    padding: 0.2rem 0.5rem;
-    margin-left: 0.5rem;
-    border-radius: 3px;
-    transition: background-color 0.2s;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    transition: color 0.2s ease, background 0.2s ease;
 }
 
-.delete-button:hover {
-    background-color: rgba(244, 67, 54, 0.1);
+.delete-button svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.delete-button:hover,
+.delete-button:active {
+    color: var(--danger);
+    background: rgba(255, 83, 71, 0.1);
 }

@@ -108,3 +108,6 @@ dist
 
 # JetBrains
 .idea
+
+# CRA build output
+frontend/build/

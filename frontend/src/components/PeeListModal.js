@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './PeeListModal.css';
 import PeeList from './PeeList';
 
@@ -8,24 +8,52 @@ const formatDate = (dateString) => {
     return date.toLocaleDateString(undefined, options);
 };
 
-const PeeListModal = ({peeData, setPeeData, onClose}) => {
+const PeeListModal = ({peeData, setPeeData, listState, onRetry, onClose}) => {
+    const [copied, setCopied] = useState(false);
+
     const copyToClipboard = () => {
-        const dataToCopy = peeData.map(pee => formatDate(pee.time)).join('\n');
+        const sorted = [...peeData].sort((a, b) => new Date(b.time) - new Date(a.time));
+        const dataToCopy = sorted.map((pee) => formatDate(pee.time)).join('\n');
         navigator.clipboard.writeText(dataToCopy).then(() => {
-            alert('Data copied to clipboard');
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
         }, () => {
-            alert('Failed to copy data to clipboard');
+            console.error('Failed to copy data to clipboard');
         });
     };
 
     return (
-        <div className="pee-list-modal">
-            <div className="modal-content">
-                <button className="close-button" onClick={onClose}>
-                    Close
-                </button>
-                <button onClick={copyToClipboard} className="copy-button">Copy</button>
-                <PeeList peeData={peeData} setPeeData={setPeeData} />
+        <div className="pee-list-modal" onClick={onClose}>
+            <div className="modal-content" onClick={(event) => event.stopPropagation()}>
+                <div className="sheet-handle" aria-hidden="true"/>
+                <div className="sheet-header">
+                    <h2 className="sheet-title">Your log</h2>
+                    <div className="sheet-actions">
+                        <button onClick={copyToClipboard} className="copy-button" disabled={peeData.length === 0}>
+                            {copied ? 'Copied ✓' : 'Copy'}
+                        </button>
+                        <button className="close-button" onClick={onClose}>
+                            Close
+                        </button>
+                    </div>
+                </div>
+                <div className="sheet-body">
+                    {listState === 'loading' && (
+                        <p className="sheet-message">Loading…</p>
+                    )}
+                    {listState === 'error' && (
+                        <div className="sheet-message">
+                            <p>Couldn't load your list.</p>
+                            <button className="retry-button" onClick={onRetry}>Retry</button>
+                        </div>
+                    )}
+                    {listState === 'ready' && peeData.length === 0 && (
+                        <p className="sheet-message">Nothing recorded yet.</p>
+                    )}
+                    {listState === 'ready' && peeData.length > 0 && (
+                        <PeeList peeData={peeData} setPeeData={setPeeData}/>
+                    )}
+                </div>
             </div>
         </div>
     );

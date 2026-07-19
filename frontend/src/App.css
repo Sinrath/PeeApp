@@ -1,77 +1,189 @@
 .App {
-    text-align: center;
-    background-color: #282c34;
     min-height: 100vh;
+    min-height: 100dvh;
+    background:
+        radial-gradient(90vw 60vh at 50% 38%, rgba(255, 165, 40, 0.13), transparent 65%),
+        radial-gradient(120vw 80vh at 50% 110%, rgba(80, 55, 130, 0.25), transparent 70%),
+        var(--bg);
+}
+
+.app-main {
+    min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+    gap: 3rem;
+    padding: calc(env(safe-area-inset-top) + 1.5rem) 1.5rem calc(env(safe-area-inset-bottom) + 2rem);
 }
+
+.app-title {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--text);
+}
+
+.app-title-accent {
+    color: var(--honey);
+}
+
+/* ---- The button ---- */
 
 .pee-button {
-    background-color: #f44336;
-    color: white;
-    font-size: 2.5rem;
-    padding: 10px 20px;
+    width: min(62vw, 250px);
+    aspect-ratio: 1;
     border: none;
-    border-radius: 5px;
+    border-radius: 50%;
     cursor: pointer;
-    transition: background-color 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    color: #3d2400;
+    background: radial-gradient(circle at 32% 28%, #ffd97a 0%, var(--honey) 45%, var(--honey-deep) 100%);
+    box-shadow:
+        0 0 60px rgba(255, 165, 40, 0.35),
+        0 14px 34px rgba(0, 0, 0, 0.45),
+        inset 0 -8px 18px rgba(150, 70, 0, 0.35),
+        inset 0 6px 14px rgba(255, 240, 200, 0.55);
+    transition: transform 0.12s ease, box-shadow 0.25s ease;
 }
 
-.pee-button.disabled {
-    background-color: #aaa; /* Gray color */
-    cursor: not-allowed; /* The 'forbidden' cursor */
+.pee-button:active {
+    transform: scale(0.93);
+    box-shadow:
+        0 0 30px rgba(255, 165, 40, 0.25),
+        0 6px 16px rgba(0, 0, 0, 0.45),
+        inset 0 -4px 10px rgba(150, 70, 0, 0.4),
+        inset 0 4px 10px rgba(255, 240, 200, 0.4);
 }
 
+.pee-button-drop {
+    width: 3.2rem;
+    height: 3.2rem;
+    color: rgba(61, 36, 0, 0.85);
+}
 
-.loading-popup {
+.pee-button-label {
+    font-size: 1.45rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+.pee-button.saving {
+    cursor: default;
+    animation: saving-pulse 1.1s ease-in-out infinite;
+}
+
+.pee-button.saving .pee-button-drop {
+    animation: drop-wiggle 1.1s ease-in-out infinite;
+}
+
+@keyframes saving-pulse {
+    0%, 100% { box-shadow: 0 0 40px rgba(255, 165, 40, 0.25), 0 14px 34px rgba(0, 0, 0, 0.45), inset 0 -8px 18px rgba(150, 70, 0, 0.35), inset 0 6px 14px rgba(255, 240, 200, 0.55); }
+    50% { box-shadow: 0 0 90px rgba(255, 165, 40, 0.55), 0 14px 34px rgba(0, 0, 0, 0.45), inset 0 -8px 18px rgba(150, 70, 0, 0.35), inset 0 6px 14px rgba(255, 240, 200, 0.55); }
+}
+
+@keyframes drop-wiggle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+/* ---- Secondary button ---- */
+
+.list-toggle {
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-dim);
+    font-size: 1.05rem;
+    font-weight: 500;
+    padding: 0.8rem 1.8rem;
+    border-radius: 999px;
+    cursor: pointer;
+    min-height: 48px;
+    transition: color 0.2s ease, background 0.2s ease;
+}
+
+.list-toggle:active {
+    background: rgba(255, 255, 255, 0.09);
+    color: var(--text);
+}
+
+/* ---- Toasts ---- */
+
+.toast {
     position: fixed;
-    top: 25%;
+    top: calc(env(safe-area-inset-top) + 14px);
     left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.7);
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    width: max-content;
+    max-width: 92vw;
+    padding: 0.8rem 1.2rem;
+    border-radius: 16px;
+    z-index: 1100;
+    animation: toast-in 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+
+@keyframes toast-in {
+    from { transform: translate(-50%, -140%); opacity: 0; }
+    to { transform: translate(-50%, 0); opacity: 1; }
+}
+
+.toast-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.toast-body {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    line-height: 1.35;
+}
+
+.toast-body strong {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.toast-sub {
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+.toast-success {
+    background: var(--surface-raised);
+    color: var(--text);
+    border: 1px solid var(--line);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.toast-success .toast-icon {
+    background: rgba(125, 219, 138, 0.15);
+    color: var(--success);
+}
+
+.toast-error {
+    background: var(--danger);
     color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    z-index: 10;
+    box-shadow: 0 10px 30px rgba(255, 83, 71, 0.35);
 }
 
-
-.list-toggle {
-    background-color: #98e59b;
-    position: fixed;
-    bottom: 5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.2s;
+.toast-error .toast-icon {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
 }
-
-.list-toggle {
-    font-size: 18px;
-    padding: 5px 10px;
-    margin-top: 1rem;
-}
-
-.success-popup {
-    font-size: 18px;
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #4caf50;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    z-index: 100;
-    max-width: 90%;
-    text-align: center;
-}
-
-
