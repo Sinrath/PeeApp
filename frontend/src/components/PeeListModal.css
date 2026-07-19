@@ -231,7 +231,13 @@
 }
 
 .add-entry-input {
+    display: block;
     width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    appearance: none;
     margin-bottom: 1.3rem;
     padding: 0.7rem 0.9rem;
     min-height: 48px;
@@ -241,7 +247,14 @@
     color: var(--text);
     font-family: inherit;
     font-size: 1.05rem;
+    text-align: center;
     color-scheme: dark;
+}
+
+/* iOS renders the value in a shadow container with its own quirks */
+.add-entry-input::-webkit-date-and-time-value {
+    text-align: center;
+    min-height: 1.3em;
 }
 
 .confirm-delete {
