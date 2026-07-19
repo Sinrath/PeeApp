@@ -25,8 +25,15 @@ const PeeListModal = ({peeData, onDelete, onAddEntry, listState, onRetry, onClos
     };
 
     return (
-        <div className="pee-list-modal" onClick={onClose}>
-            <div className="modal-content" onClick={(event) => event.stopPropagation()}>
+        <div
+            className="pee-list-modal"
+            onClick={(event) => {
+                // Portal children (add-entry dialog) bubble here too — only
+                // close when the backdrop itself was tapped
+                if (event.target === event.currentTarget) onClose();
+            }}
+        >
+            <div className="modal-content">
                 <div className="sheet-handle" aria-hidden="true"/>
                 <div className="sheet-header">
                     <h2 className="sheet-title">Your log</h2>

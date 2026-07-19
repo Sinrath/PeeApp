@@ -78,6 +78,18 @@ test('pending entries show in the list until they sync', async () => {
     expect(await screen.findByText(/pending/i, {}, { timeout: 3000 })).toBeInTheDocument();
 });
 
+test('tapping the time input keeps the add-entry dialog open', async () => {
+    fetch.mockResolvedValueOnce(jsonResponse([]));
+    render(<App />);
+
+    await userEvent.click(screen.getByRole('button', { name: /show list/i }));
+    await userEvent.click(await screen.findByRole('button', { name: /add entry/i }));
+    await userEvent.click(screen.getByLabelText(/time/i));
+
+    expect(screen.getByLabelText(/time/i)).toBeInTheDocument();
+    expect(screen.getByText(/your log/i)).toBeInTheDocument();
+});
+
 test('an entry with a custom time can be added from the list', async () => {
     const customIso = new Date('2026-07-19T08:30:00').toISOString();
     fetch.mockResolvedValueOnce(jsonResponse([]));
