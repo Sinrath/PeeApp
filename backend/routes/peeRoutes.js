@@ -5,7 +5,15 @@ const mongoose = require('mongoose');
 const router = express.Router();
 
 router.post('/', async (req, res) => {
-    const pee = new Pee({ time: new Date(), _id: new mongoose.Types.ObjectId() });
+    // Clients may supply the time (offline sync, manual entries); default to now
+    let time = new Date();
+    if (req.body && req.body.time !== undefined) {
+        time = new Date(req.body.time);
+        if (isNaN(time.getTime())) {
+            return res.status(400).json({ message: 'Invalid time' });
+        }
+    }
+    const pee = new Pee({ time, _id: new mongoose.Types.ObjectId() });
     try {
         await pee.save();
         res.json({ message: "Pee time saved", pee: pee });

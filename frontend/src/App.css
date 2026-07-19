@@ -95,6 +95,23 @@
 
 /* ---- Secondary button ---- */
 
+.below-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.9rem;
+}
+
+.pending-hint {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--honey);
+    background: rgba(255, 181, 46, 0.1);
+    border: 1px solid rgba(255, 181, 46, 0.25);
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+}
+
 .list-toggle {
     border: 1px solid var(--line);
     background: rgba(255, 255, 255, 0.04);
@@ -175,6 +192,18 @@
 .toast-success .toast-icon {
     background: rgba(125, 219, 138, 0.15);
     color: var(--success);
+}
+
+.toast-queued {
+    background: var(--surface-raised);
+    color: var(--text);
+    border: 1px solid rgba(255, 181, 46, 0.35);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.toast-queued .toast-icon {
+    background: rgba(255, 181, 46, 0.15);
+    color: var(--honey);
 }
 
 .toast-error {

@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import './PeeListModal.css';
 import PeeList from './PeeList';
+import AddEntryModal from './AddEntryModal';
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -8,8 +9,9 @@ const formatDate = (dateString) => {
     return date.toLocaleDateString(undefined, options);
 };
 
-const PeeListModal = ({peeData, setPeeData, listState, onRetry, onClose}) => {
+const PeeListModal = ({peeData, onDelete, onAddEntry, listState, onRetry, onClose}) => {
     const [copied, setCopied] = useState(false);
+    const [showAddEntry, setShowAddEntry] = useState(false);
 
     const copyToClipboard = () => {
         const sorted = [...peeData].sort((a, b) => new Date(b.time) - new Date(a.time));
@@ -38,6 +40,11 @@ const PeeListModal = ({peeData, setPeeData, listState, onRetry, onClose}) => {
                     </div>
                 </div>
                 <div className="sheet-body">
+                    {listState !== 'error' && (
+                        <button className="add-entry-button" onClick={() => setShowAddEntry(true)}>
+                            + Add entry
+                        </button>
+                    )}
                     {listState === 'loading' && (
                         <p className="sheet-message">Loading…</p>
                     )}
@@ -51,10 +58,15 @@ const PeeListModal = ({peeData, setPeeData, listState, onRetry, onClose}) => {
                         <p className="sheet-message">Nothing recorded yet.</p>
                     )}
                     {listState === 'ready' && peeData.length > 0 && (
-                        <PeeList peeData={peeData} setPeeData={setPeeData}/>
+                        <PeeList peeData={peeData} onDelete={onDelete}/>
                     )}
                 </div>
             </div>
+            <AddEntryModal
+                isOpen={showAddEntry}
+                onRequestClose={() => setShowAddEntry(false)}
+                onSave={onAddEntry}
+            />
         </div>
     );
 };

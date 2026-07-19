@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import './PeeList.css';
 import ConfirmModal from './ConfirmModal';
 
-const isDevelopment = process.env.NODE_ENV === 'development';
-const API_URL = isDevelopment ? 'http://localhost:3500' : '';
-
 const formatTime = (dateString) => {
     return new Date(dateString).toLocaleTimeString(undefined, {hour: '2-digit', minute: '2-digit'});
 };
@@ -32,7 +29,7 @@ const groupByDay = (peeData) => {
     return Object.values(groups).sort((a, b) => b.key - a.key);
 };
 
-function PeeList({ peeData, setPeeData }) {
+function PeeList({ peeData, onDelete }) {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [selectedId, setSelectedId] = useState(null);
 
@@ -41,17 +38,8 @@ function PeeList({ peeData, setPeeData }) {
         setModalIsOpen(true);
     };
 
-    const deletePee = async (id) => {
-        try {
-            const response = await fetch(`${API_URL}/pee/${id}`, {method: 'DELETE'});
-            if (response.ok) {
-                setPeeData((prev) => prev.filter((pee) => pee._id !== id));
-            } else {
-                console.error('Error deleting pee:', response.statusText);
-            }
-        } catch (error) {
-            console.error('Error deleting pee:', error);
-        }
+    const confirmDelete = async (id) => {
+        await onDelete(id);
         setModalIsOpen(false);
     };
 
@@ -69,7 +57,10 @@ function PeeList({ peeData, setPeeData }) {
                     <ul>
                         {group.entries.map((pee) => (
                             <li key={pee._id}>
-                                <span className="pee-time">{formatTime(pee.time)}</span>
+                                <span className="pee-time">
+                                    {formatTime(pee.time)}
+                                    {pee.pending && <span className="pending-chip">pending</span>}
+                                </span>
                                 <button
                                     className="delete-button"
                                     aria-label="Delete entry"
@@ -90,7 +81,7 @@ function PeeList({ peeData, setPeeData }) {
             <ConfirmModal
                 isOpen={modalIsOpen}
                 onRequestClose={() => setModalIsOpen(false)}
-                onConfirm={() => deletePee(selectedId)}
+                onConfirm={() => confirmDelete(selectedId)}
                 message="Delete this pee time?"
             />
         </div>

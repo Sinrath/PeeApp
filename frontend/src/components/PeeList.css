@@ -56,6 +56,20 @@
     font-variant-numeric: tabular-nums;
 }
 
+.pending-chip {
+    margin-left: 0.6rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--honey);
+    background: rgba(255, 181, 46, 0.12);
+    border: 1px solid rgba(255, 181, 46, 0.3);
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    vertical-align: middle;
+}
+
 .delete-button {
     border: none;
     background: transparent;

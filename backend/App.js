@@ -11,6 +11,7 @@ const port = process.env.PORT || 3500;
 connectDB()
     .then(() => {
         app.use(cors());
+        app.use(express.json());
         // Define routes
         app.use('/pee', peeRoutes);
 
